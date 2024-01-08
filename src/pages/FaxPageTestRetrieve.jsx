@@ -32,62 +32,130 @@ import RemedySvgTemplate from '../components/RemedySvgTemplate';
 const FaxPageTestRetrieve = () => {
 
 
+//Get_Fax_Inbox: 
+    const [inbox, setInbox] = useState([])
+
+    const handleRetrieveInbox = async () => {
+
+        try {
+        //         const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php', {
+        //             // responseType: 'text', // Adjust the responseType based on your expected response type
+        //             // responseType: 'blob', // Adjust the responseType based on your expected response type
+        //             responseType: 'arraybuffer' // Adjust the responseType based on your expected response type
+        //         });
+                          
+                    // const response = await axios.get('https://rxminter.com/srfax/Get_Fax_Inbox_Curl.php')
+                    const response = await axios.get('https://rxminter.com/srfax/Get_Fax_Inbox.php')
+
+                        // await axios.get('https://rxminter.com/srfax/Get_Fax_Inbox.php', {
+                        //     headers: {
+                        //         'accept': 'application/json',
+                        //         'Accept-Language': 'en-US,en;q=0.8',
+                        //         'Content-Type': `application/json; charset=UTF-8`,
+                        //       },
+                        //     }
+                        // ).then((response)=>{     })}             
+
+                    setInbox(response.data.Result)
+                    
+                    
+                        // setInbox(response.data.Result)
+                        // setInbox(response.data)
+
+                    // console.log("After setFaxContent content_type was: ", response.data.content_type)
+                    console.log("After getInbox3 result was: ", response)
+                    console.log("After getInbox3 response.data was: ", response.data)
+                    console.log("After getInbox3 response.data.result was: ", response.data.Result)              
+            }        
+          catch(error){
+                console.log('ERROR: Get-Fax-Inbox.php returned: ', error)
+                // alertService.error(`Retrieve-Fax.php Error with message of ${error} :(`, options);           
+        } 
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Attempt 1: 
     const [faxContent, setFaxContent] = useState('');
 
 // Attempt 2:
     const [result, setResult] = useState('');
+    const [resultAtob, setResultAtob] = useState('')
     // const [result, setResult] = useState({ content_type: '', data: '' });
     const [error, setError] = useState('');
 
     const handleRetrieveFax = async () => {
 
         try {
-                const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php', {
-                    // responseType: 'text', // Adjust the responseType based on your expected response type
-                    responseType: 'arraybuffer', // Adjust the responseType based on your expected response type
-                });
-            
-                    // const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php')
-                    // setFaxContent(response)
-                    // // console.log("After setFaxContent content_type was: ", response.data.content_type)
-                    // // console.log("After setFaxContent result was: ", response.data.result)
-                    // console.log("After setFaxContent response.data was: ", response.data)
-                    // console.log("After setFaxContent response object was: ", response)
+        //         const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php', {
+        //             // responseType: 'text', // Adjust the responseType based on your expected response type
+        //             // responseType: 'blob', // Adjust the responseType based on your expected response type
+        //             responseType: 'arraybuffer' // Adjust the responseType based on your expected response type
+        //         });
+                          
+                    const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php')
+                    setFaxContent(response)
 
-            // Check if the response contains an error property
-            setResult(response.data);
-            console.log("response is ",response)
-            console.log("response.data is ",response.data)
+                    setResult(response.data)
 
-                // if (response.data.error) {
-                //     setError(response.data.error);
-                // } else {
-                //   setResult(response.data.result);
-                //     // setResult({
-                //     //     content_type: response.data.content_type,
-                //     //     data: response.data.result,
-                //     // });
+                        // let encodedResponse = btoa(response)
+                        // setResult(encodedResponse)
+                        // let decodedResponse = atob(response) //[object Object]
+                        let decodedResponse = btoa(response.data)
+                        setResultAtob(decodedResponse)
+
+                    // console.log("After setFaxContent content_type was: ", response.data.content_type)
+                    console.log("After setFaxContent result was: ", response.data.result)
+                    console.log("After setFaxContent response.data was: ", response.data)
+                    console.log("After setFaxContent response.result object was: ", response.result)
+            }
+
+        //     // Check if the response contains an error property
+        //     setResult(response);
+        //     console.log("response is ",response)
+        //     console.log("response.data is ",response.data)
+
+        //         // if (response.data.error) {
+        //         //     setError(response.data.error);
+        //         // } else {
+        //         //   setResult(response.data.result);
+        //         //     // setResult({
+        //         //     //     content_type: response.data.content_type,
+        //         //     //     data: response.data.result,
+        //         //     // });
+        //         // }
+        // } 
+
+                // catch (error) {
+                //     console.error('Error retrieving fax:', error);
+                //     // setError('An error occurred while retrieving the fax.');
                 // }
-        } 
-        // catch (error) {
-        //     console.error('Error retrieving fax:', error);
-        //     // setError('An error occurred while retrieving the fax.');
-        // }
 
-        // try {
-        //     const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php', {
-        //       responseType: 'arraybuffer', // This indicates binary data
-        //     });
-        
-        //     const blob = new Blob([response.data], { type: 'application/pdf' }); // Adjust the type according to your content
-        //     console.log("blob is: ", blob)
-        //     const url = URL.createObjectURL(blob);
-        //     console.log("url is: ", url)
-        //     setFaxContent(url);
-        //     // setFaxContent(blob)
-        //     console.log('SUCCESS: Retrieve-Fax.php returned: ', response.data)
-        //   }
+// try {
+//     const response = await axios.get('https://rxminter.com/srfax/Retrieve_Fax.php', {
+//         responseType: 'arraybuffer', // This indicates binary data
+//     });
+
+//     const blob = new Blob([response.data], { type: 'application/pdf' }); // Adjust the type according to your content
+//     console.log("blob is: ", blob)
+//     const url = URL.createObjectURL(blob);
+//     console.log("url is: ", url)
+//     setResult(url);
+//     // setFaxContent(blob)
+//     console.log('SUCCESS: Retrieve-Fax.php returned: ', response.data)
+//     }
           
           catch(error){
                 console.log('ERROR: Retrieve-Fax.php returned: ', error)
@@ -102,6 +170,24 @@ const FaxPageTestRetrieve = () => {
   return (
         <>
 
+            <h3>Get Fax Inbox (1/7/2023)</h3>
+            <button className="btn btn-info" onClick={handleRetrieveInbox}>Get Fax Inbox (onClick=handleRetrieveInbox)</button>
+
+        <br></br>
+        <br></br>
+                {inbox ? inbox.map((fax, index) => (
+                    <ul key={index}>
+                        <li>Fax Name: {fax.FileName}</li>
+                        <li>Date: {fax.Date}</li>
+                        <li>Caller ID: {fax.CallerID}</li>
+                        <li>Remote ID: {fax.RemoteID}</li>
+                    </ul>
+                )) : <p>Nothing found.</p>}
+
+
+            <br></br>
+<hr></hr>
+<br></br>
             <h3>Retrieve Fax Test (1/6/2023)</h3>
 
             <button className="btn btn-warning" onClick={handleRetrieveFax}>Send Fax Now (onClick=handleRetrieveFax)</button>
@@ -114,6 +200,8 @@ const FaxPageTestRetrieve = () => {
                 {result && (
                     <div>
                         <p>Success! Result from Server:</p>
+                        <p>Text: {result}</p>
+                        <p>base64 Text: {resultAtob}</p>
                         {/* Display the PDF using an iframe */}
                         <iframe title="PDF Viewer" width="100%" height="500px" src={`data:application/pdf;base64,${result}`} />
                     </div>
